@@ -1,4 +1,3 @@
-function [output] = stepA()
-    output = 0;
-    % Not finished yet, what does this function do?
+function [output] = stepA(input)
+    output = (input >= 0);
 end

@@ -17,7 +17,7 @@ for n = 1 : 3
     hold on;
     asp = round(mean(isi(tspike))); % mean spike interval time 
     if isnan(asp)
-        asp = 0;
+        asp = "infinite";
     end
     legendentry =  "Rin="+Rins(n)+", mean spike interval time="+asp;
     legends = [legends, legendentry];
@@ -46,7 +46,7 @@ for n = 1 : 3
     hold on;
     asp = round(mean(isi(tspike))); % mean spike interval time 
     if isnan(asp)
-        asp = 0;
+        asp = "infinite";
     end
     legendentry =  "tau="+taus(n)+", mean spike interval time="+asp;
     legends = [legends, legendentry];
@@ -74,14 +74,14 @@ for n = 1 : 3
     hold on;
     asp = round(mean(isi(tspike))); % mean spike interval time 
     if isnan(asp)
-        asp = 0;
+        asp = "infinite";
     end
     legendentry =  "theta="+thetas(n)+", mean spike interval time="+asp;
     legends = [legends, legendentry];
 end
 
 % Make it look decent
-title("tau parameter sweep");
+title("theta parameter sweep");
 legend(legends);
 ylim([0 5]);
 ylabel("Voltage (mV)"); % Set the y axis label
