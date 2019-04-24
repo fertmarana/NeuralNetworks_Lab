@@ -12,7 +12,7 @@ fig.PaperUnits = "inches";
 fig.PaperPosition = [0 0 6 3];
 
 % Make it look decent
-title("Rin="+Rin+", tau="+tau+", theta="+theta+", mean spike interval time="+asp);
+title("Rin="+num2str(Rin)+", tau="+tau+", theta="+theta+", mean spike interval time="+asp);
 ylim([0 5]);
 ylabel("Voltage (mV)"); % Set the y axis label
 xlabel("Time (ms)"); % Set the x axis label
