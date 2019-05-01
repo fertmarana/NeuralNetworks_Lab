@@ -1,3 +1,3 @@
 function [error] = pError(t, o)
-    error = sum(abs(t - o));
+    error = sum(t - o);
 end

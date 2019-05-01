@@ -1,3 +1,3 @@
-function [weightedSum] = summedInput(x, W, b)
-    weightedSum = sum([x -1] .* [W b]);
+function [weightedSum] = summedInput(x, weights, threshold)
+    weightedSum = sum([x -1] .* [weights threshold]);
 end
