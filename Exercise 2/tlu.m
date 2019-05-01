@@ -6,10 +6,10 @@ learn_rate = 0.1;    % the learning rate
 n_epochs = 20;      % the number of epochs we want to train
 
 % Define the inputs
-examples = [[0, 0]; [0, 1]; [1, 0]; [1, 1]];
+examplesInput = examplesA()
 
 % Define the corresponding target outputs
-goal = [0, 0, 0, 1];
+goal = goalAND()
 
 % Initialize the weights and the threshold
 weights = [initW() initW()];
@@ -22,8 +22,8 @@ h_weights = zeros(n_epochs,2);
 h_threshold = zeros(n_epochs,1);
 
 % Store number of examples and number of inputs per example
-n_examples = size(examples,1);     % The number of input patterns
-n_inputs = size(examples,2);       % The number of inputs
+n_examples = size(examplesInput,1);     % The number of input patterns
+n_inputs = size(examplesInput,2);       % The number of inputs
 
 for epoch = 1:n_epochs
     epoch_error = zeros(n_examples,1);
@@ -33,7 +33,7 @@ for epoch = 1:n_epochs
 
     for pattern = 1:n_examples
 
-        [weights, threshold, error] = netStep(learn_rate, weights, threshold, examples(pattern, :), goal(pattern));
+        [weights, threshold, error] = netStep(learn_rate, weights, threshold, examplesInput(pattern, :), goal(pattern));
 
     	% Store squared error
         epoch_error(pattern) = error.^2;
