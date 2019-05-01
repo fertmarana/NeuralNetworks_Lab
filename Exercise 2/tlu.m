@@ -3,17 +3,17 @@
 
 % Parameters
 learn_rate = 0.1;    % the learning rate
-n_epochs = 100;      % the number of epochs we want to train
+n_epochs = 20;      % the number of epochs we want to train
 
 % Define the inputs
-examples = 0;
+examples = [[0, 0]; [0, 1]; [1, 0]; [1, 1]];
 
 % Define the corresponding target outputs
-goal = 0;
+goal = [0, 0, 0, 1];
 
 % Initialize the weights and the threshold
-weights = 0;
-threshold = 0;
+weights = [initW() initW()];
+threshold = initB();
 
 % Preallocate vectors for efficiency. They are used to log your data
 % The 'h' is for history
