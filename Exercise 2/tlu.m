@@ -1,5 +1,5 @@
 % TLU implementation
-% Put your names here
+% Fernanda Marana (s3902064) & Floris Cornel (s2724685)
 
 % Parameters
 learn_rate = 0.1;    % the learning rate
