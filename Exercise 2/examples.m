@@ -1,4 +1,4 @@
-function [output] = examplesC()
+function [output] = examples()
     output = [
         0 0
         0 1
