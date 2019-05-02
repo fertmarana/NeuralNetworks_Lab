@@ -1,15 +1,15 @@
 % TLU implementation
-% Put your names here
+% Fernanda Marana (s3902064) & Floris Cornel (s2724685)
 
 % Parameters
 learn_rate = 0.1;    % the learning rate
-n_epochs = 20;      % the number of epochs we want to train
+n_epochs = 100;      % the number of epochs we want to train
 
 % Define the inputs
-examplesInput = examplesA()
+examplesInput = examples();
 
 % Define the corresponding target outputs
-goal = goalAND()
+goal = goalAND();
 
 % Initialize the weights and the threshold
 weights = [initW() initW()];
@@ -41,20 +41,23 @@ for epoch = 1:n_epochs
     end
 
     h_error(epoch) = sum(epoch_error);
+    if (h_error(epoch) == 0) 
+        break;
+    end
 end
 
 % Plot functions
 figure(1);
-plot(h_error)
+plot(h_error(1:epoch))
 title('\textbf{TLU-error over epochs}', 'interpreter', 'latex', 'fontsize', 12);
 xlabel('\# of epochs', 'interpreter', 'latex', 'fontsize', 12)
 ylabel('Summed Squared Error', 'interpreter', 'latex', 'fontsize', 12)
 
 figure(2);
-plot(1:n_epochs,h_weights(:,1),'r-','DisplayName','weight 1')
+plot(1:epoch,h_weights(1:epoch,1),'r-','DisplayName','weight 1')
 hold on
-plot(1:n_epochs,h_weights(:,2),'b-','DisplayName','weight 2')
-plot(1:n_epochs,h_threshold,'k-','DisplayName','threshold')
+plot(1:epoch,h_weights(1:epoch,2),'b-','DisplayName','weight 2')
+plot(1:epoch,h_threshold(1:epoch),'k-','DisplayName','threshold')
 xlabel('\# of epochs', 'interpreter', 'latex', 'fontsize', 12)
 title('\textbf{Weight vector and threshold vs epochs}', 'interpreter', 'latex', 'fontsize', 12);
 h = legend('location','NorthEast');
