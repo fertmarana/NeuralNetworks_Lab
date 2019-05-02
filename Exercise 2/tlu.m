@@ -46,8 +46,6 @@ for epoch = 1:n_epochs
     end
 end
 
-epoch = epoch;
-
 % Plot functions
 figure(1);
 plot(h_error(1:epoch))
