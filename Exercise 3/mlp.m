@@ -53,38 +53,41 @@ while ~stop_criterium
     for pattern = 1:size(input_data,1)
         
         % Compute the activation in the hidden layer
-        hidden_activation = 0;
+        hidden_activation = input_data .* w_hidden ;
         
         % Compute the output of the hidden layer (don't modify this)
         hidden_output = sigmoid(hidden_activation);
         
         % Compute the activation of the output neurons
-        output_activation = 0;
+        %not sure
+        output_activation = w_output .* hidden_output;
         
         % Compute the output
         output = output_function(output_activation);
         
         % Compute the error on the output
-        output_error = 0;
+        output_error = sum((output_activation - goal)^2)/2;
         
         % Compute local gradient of output layer
-        local_gradient_output = 0;
+        local_gradient_output = d_sigmoid(output_activation).*(goal -output);
+        
         
         % Compute the error on the hidden layer (backpropagate)
-        hidden_error = 0;        
+        hidden_error = 0 ;
         
         % Compute local gradient of hidden layer
-        local_gradient_hidden = 0;
+        local_gradient_hidden =  d_output_function(hidden_activation).* sum(local_gradient_output .* w_output);
+                
         
         % Compute the delta rule for the output
-        delta_output = 0;
+        delta_output = learn_rate * hidden_output .* local_gradient_output;
         
         % Compute the delta rule for the hidden units;
-        delta_hidden = 0;
+        delta_hidden = learn_rate * examples .* local_gradient_hidden;
         
         % Update the weight matrices
-        w_hidden = 0;
-        w_output = 0;
+        w_hidden = w_hidden + delta_hidden;
+        w_output = w_output + delta_output;
         
         % Store data
         epoch_error = epoch_error + (output_error).^2;        
