@@ -34,7 +34,6 @@ w_output = rand(n_hidden, n_output) .* weight_spread - weight_spread/2 + mean_we
 % Start training
 stop_criterium = 0;
 epoch = 0;
-min_error = 0.01;
 
 while ~stop_criterium
     epoch = epoch + 1;
@@ -50,12 +49,8 @@ while ~stop_criterium
     epoch_delta_hidden = 0;
     epoch_delta_output = 0;
     
-   
-    
     % FROM HEREON YOU NEED TO MODIFY THE CODE!
     for pattern = 1:size(input_data,1)
-        
-         
         
         % Compute the activation in the hidden layer
         hidden_activation = input_data * w_hidden ;
@@ -71,7 +66,7 @@ while ~stop_criterium
         output = output_function(output_activation);
         
         % Compute the error on the output
-        output_error = (output - goal);
+        output_error = sum((output_activation - goal).^2)/2;
         
         % Compute local gradient of output layer
         local_gradient_output = d_sigmoid(output_activation).*(goal -output);
@@ -81,39 +76,36 @@ while ~stop_criterium
         hidden_error = 0 ;
         
         % Compute local gradient of hidden layer
-        local_gradient_hidden = d_output_function(hidden_activation) .* (sum(local_gradient_output * transpose( w_output)));
-              
+        local_gradient_hidden =  sum(local_gradient_output .* transpose( w_output)) * transpose(d_output_function(hidden_activation));
+                
+        
         % Compute the delta rule for the output
-        delta_output = learn_rate * transpose( hidden_output) * local_gradient_output  ;
+        delta_output = learn_rate * hidden_output .* local_gradient_output;
         
         % Compute the delta rule for the hidden units;
-        delta_hidden =  learn_rate * transpose(input_data) * local_gradient_hidden  ;
+        delta_hidden =  local_gradient_hidden * learn_rate * examples ;
         
         % Update the weight matrices
-        w_hidden = upW(w_hidden, delta_hidden);
-        w_output = upW(w_output , delta_output);
+        w_hidden = upW(w_hidden, de;
+        w_output = w_output + delta_output;
         
         % Store data
         epoch_error = epoch_error + (output_error).^2;        
         epoch_delta_output = epoch_delta_output + sum(sum(abs(delta_output)));
         epoch_delta_hidden = epoch_delta_hidden + sum(sum(abs(delta_hidden)));
     end
-    if(epoch_error<0.01)
-      break;
-    end
-    % Log data
     
-    h_error(epoch) = sum(epoch_error) / size(input_data,1);
+    % Log data
+    h_error(epoch) = epoch_error / size(input_data,1);
     log_delta_output(epoch) = epoch_delta_output;
     log_delta_hidden(epoch) = epoch_delta_hidden;
     
     % Check whether maximum number of epochs is reached
-    
-    
-    % Implement a stop criterion here
     if epoch > max_epoch
         stop_criterium = 1;
     end
+    
+    % Implement a stop criterion here
     
     % Plot the animation
     if and((mod(epoch,20)==0),(plot_animation))
