@@ -8,10 +8,11 @@ goal = [0.01 0.99 0.99 0.01]';
 
 % Boolean for plotting the animation
 plot_animation = true;
+min_error = 0.01;
 
 % Parameters for the network
 learn_rate = 0.2;               % learning rate
-max_epoch = 5000;              % maximum number of epochs
+max_epoch = 50000;              % maximum number of epochs
 
 mean_weight = 0;
 weight_spread = 1;
@@ -81,7 +82,7 @@ while ~stop_criterium
         hidden_error = 0 ;
         
         % Compute local gradient of hidden layer
-        local_gradient_hidden = d_output_function(hidden_activation) .* (sum(local_gradient_output * transpose( w_output)));
+        local_gradient_hidden = d_output_function(hidden_activation) .* (local_gradient_output * transpose( w_output));
               
         % Compute the delta rule for the output
         delta_output = learn_rate * transpose( hidden_output) * local_gradient_output  ;
@@ -94,13 +95,15 @@ while ~stop_criterium
         w_output = upW(w_output , delta_output);
         
         % Store data
-        epoch_error = epoch_error + (output_error).^2;        
+        epoch_error = epoch_error + (output_error).^2;       
         epoch_delta_output = epoch_delta_output + sum(sum(abs(delta_output)));
         epoch_delta_hidden = epoch_delta_hidden + sum(sum(abs(delta_hidden)));
     end
-    if(epoch_error<0.01)
+    if(sum(epoch_error)<0.01)
       break;
     end
+    
+    
     % Log data
     
     h_error(epoch) = sum(epoch_error) / size(input_data,1);
@@ -111,7 +114,7 @@ while ~stop_criterium
     
     
     % Implement a stop criterion here
-    if epoch > max_epoch
+    if h_error < min_error || epoch == max_epoch
         stop_criterium = 1;
     end
     
@@ -138,7 +141,7 @@ end
 
 % Plotting the error
 figure(2)
-plot(1:epoch,h_error)
+plot(1:epoch-1,h_error)
 title('Mean squared error vs epoch');
 xlabel('Epoch no.');
 ylabel('MSE');
