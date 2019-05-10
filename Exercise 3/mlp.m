@@ -8,11 +8,11 @@ goal = [0.01 0.99 0.99 0.01]';
 
 % Boolean for plotting the animation
 plot_animation = true;
-min_error = 0.01;
+
 
 % Parameters for the network
 learn_rate = 0.2;               % learning rate
-max_epoch = 50000;              % maximum number of epochs
+max_epoch = 5000;              % maximum number of epochs
 
 mean_weight = 0;
 weight_spread = 1;
@@ -56,8 +56,6 @@ while ~stop_criterium
     % FROM HEREON YOU NEED TO MODIFY THE CODE!
     for pattern = 1:size(input_data,1)
         
-         
-        
         % Compute the activation in the hidden layer
         hidden_activation = input_data * w_hidden ;
         
@@ -99,14 +97,12 @@ while ~stop_criterium
         epoch_delta_output = epoch_delta_output + sum(sum(abs(delta_output)));
         epoch_delta_hidden = epoch_delta_hidden + sum(sum(abs(delta_hidden)));
     end
-    if(sum(epoch_error)<0.01)
-      break;
-    end
+
     
     
     % Log data
     
-    h_error(epoch) = sum(epoch_error) / size(input_data,1);
+    h_error(epoch) = sum(epoch_error) / size(input_data,1)
     log_delta_output(epoch) = epoch_delta_output;
     log_delta_hidden(epoch) = epoch_delta_hidden;
     
@@ -114,7 +110,8 @@ while ~stop_criterium
     
     
     % Implement a stop criterion here
-    if h_error < min_error || epoch == max_epoch
+    if h_error(epoch) < min_error
+       
         stop_criterium = 1;
     end
     
@@ -141,7 +138,7 @@ end
 
 % Plotting the error
 figure(2)
-plot(1:epoch-1,h_error)
+plot(1:epoch,h_error)
 title('Mean squared error vs epoch');
 xlabel('Epoch no.');
 ylabel('MSE');
