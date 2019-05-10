@@ -4,7 +4,7 @@ close all
 % The number of examples taken from the function
 n_examples = 20; 
 
-examples = (0:2*pi/(n_examples-1):2*pi);
+examples = (0:2*pi/(n_examples):2*pi);
 goal = sin(examples);
 
 % Boolean for plotting animation
@@ -52,7 +52,7 @@ while ~stop_criterium
     epoch_delta_output = 0;
     for pattern = 1:size(input_data,1)
        % Compute the activation in the hidden layer
-        hidden_activation = input_data * w_hidden ;
+        hidden_activation = identity_function_sin(input_data * w_hidden) ;
         
         % Compute the output of the hidden layer (don't modify this)
         hidden_output = sigmoid(hidden_activation);
