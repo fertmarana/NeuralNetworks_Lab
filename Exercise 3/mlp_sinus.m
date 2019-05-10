@@ -4,7 +4,7 @@ close all
 % The number of examples taken from the function
 n_examples = 20; 
 
-examples = (0:2*pi/(n_examples-1):2*pi)';
+examples = (0:2*pi/(n_examples-1):2*pi);
 goal = sin(examples);
 
 % Boolean for plotting animation
@@ -35,6 +35,7 @@ w_output = rand(n_hidden, n_output) .* weight_spread - weight_spread/2 + mean_we
 % Start training
 stop_criterium = 0;
 epoch = 0;
+min_error =0.01;
 
 while ~stop_criterium
     epoch = epoch + 1;
@@ -50,18 +51,63 @@ while ~stop_criterium
     epoch_delta_hidden = 0;
     epoch_delta_output = 0;
     for pattern = 1:size(input_data,1)
-       % Copy the for-loop body from mlp_2011.m
+       % Compute the activation in the hidden layer
+        hidden_activation = input_data * w_hidden ;
+        
+        % Compute the output of the hidden layer (don't modify this)
+        hidden_output = sigmoid(hidden_activation);
+        
+        % Compute the activation of the output neurons
+        %not sure
+        output_activation = identity_function_sin(hidden_output * w_output) ;
+        
+        % Compute the output
+        output = output_function(output_activation);
+        
+        % Compute the error on the output
+        output_error = (output - goal);
+        
+        % Compute local gradient of output layer
+        local_gradient_output = d_sigmoid(output_activation).*(goal -output);
+        
+        
+        % Compute the error on the hidden layer (backpropagate)
+        hidden_error = 0 ;
+        
+        % Compute local gradient of hidden layer
+        local_gradient_hidden = d_output_function_sin(hidden_activation) .* (local_gradient_output * transpose( w_output));
+              
+        % Compute the delta rule for the output
+        delta_output = learn_rate * transpose( hidden_output) * local_gradient_output  ;
+        
+        % Compute the delta rule for the hidden units;
+        delta_hidden =  learn_rate * transpose(input_data) * local_gradient_hidden  ;
+        
+        % Update the weight matrices
+        w_hidden = upW(w_hidden, delta_hidden);
+        w_output = upW(w_output , delta_output);
+        
+        % Store data
+        epoch_error = epoch_error + (output_error).^2;       
+        epoch_delta_output = epoch_delta_output + sum(sum(abs(delta_output)));
+        epoch_delta_hidden = epoch_delta_hidden + sum(sum(abs(delta_hidden)));
+       
+       
     end
     
-    h_error(epoch) = epoch_error / size(input_data,1);
+    h_error(epoch) = sum(epoch_error) / size(input_data,1);
     log_delta_output(epoch) = epoch_delta_output;
     log_delta_hidden(epoch) = epoch_delta_hidden;
 
     if epoch > max_epoch
-        stop_criterium = 1;
+        %stop_criterium = 1;
     end
     
     % Add your stop criterion here
+    if h_error(epoch) < min_error
+       
+        stop_criterium = 1;
+    end
     
     % Plot the animation
     if and((mod(epoch,20)==0),(plot_animation))

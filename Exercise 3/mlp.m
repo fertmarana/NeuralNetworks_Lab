@@ -102,7 +102,7 @@ while ~stop_criterium
     
     % Log data
     
-    h_error(epoch) = sum(epoch_error) / size(input_data,1)
+    h_error(epoch) = sum(epoch_error) / size(input_data,1);
     log_delta_output(epoch) = epoch_delta_output;
     log_delta_hidden(epoch) = epoch_delta_hidden;
     
