@@ -57,7 +57,7 @@ while ~stop_criterium
     for pattern = 1:size(input_data,1)
         
         % Compute the activation in the hidden layer
-        hidden_activation = input_data * w_hidden ;
+        hidden_activation = input_data(pattern,:) * w_hidden ;
         
         % Compute the output of the hidden layer (don't modify this)
         hidden_output = sigmoid(hidden_activation);
@@ -70,10 +70,10 @@ while ~stop_criterium
         output = output_function(output_activation);
         
         % Compute the error on the output
-        output_error = (output - goal);
+        output_error = (output - goal(pattern));
         
         % Compute local gradient of output layer
-        local_gradient_output = d_sigmoid(output_activation).*(goal -output);
+        local_gradient_output = d_sigmoid(output_activation).*(goal(pattern) -output);
         
         
         % Compute the error on the hidden layer (backpropagate)
@@ -86,7 +86,7 @@ while ~stop_criterium
         delta_output = learn_rate * transpose( hidden_output) * local_gradient_output  ;
         
         % Compute the delta rule for the hidden units;
-        delta_hidden =  learn_rate * transpose(input_data) * local_gradient_hidden  ;
+        delta_hidden =  learn_rate * transpose(input_data(pattern,:)) * local_gradient_hidden  ;
         
         % Update the weight matrices
         w_hidden = upW(w_hidden, delta_hidden);
