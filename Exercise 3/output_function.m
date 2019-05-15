@@ -1,4 +1,4 @@
 function [output] = output_function(x)
     % set output here
-    output = sigmoid(x);
+    output = sin(x);
 end

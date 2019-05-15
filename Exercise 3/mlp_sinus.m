@@ -4,7 +4,7 @@ close all
 % The number of examples taken from the function
 n_examples = 20; 
 
-examples = (0:2*pi/(n_examples):2*pi);
+examples = (0:2*pi/(n_examples):2*pi).';
 goal = sin(examples);
 
 % Boolean for plotting animation
@@ -52,23 +52,23 @@ while ~stop_criterium
     epoch_delta_output = 0;
     for pattern = 1:size(input_data,1)
        % Compute the activation in the hidden layer
-        hidden_activation = identity_function_sin(input_data * w_hidden) ;
+        hidden_activation = input_data(pattern,:) * w_hidden;
         
         % Compute the output of the hidden layer (don't modify this)
         hidden_output = sigmoid(hidden_activation);
         
         % Compute the activation of the output neurons
         %not sure
-        output_activation = identity_function_sin(hidden_output * w_output) ;
+        output_activation = hidden_output * w_output;
         
         % Compute the output
         output = output_function(output_activation);
         
         % Compute the error on the output
-        output_error = (output - goal);
+        output_error = (output - goal(pattern));
         
         % Compute local gradient of output layer
-        local_gradient_output = d_sigmoid(output_activation).*(goal -output);
+        local_gradient_output = d_sigmoid(output_activation).*(goal(pattern) -output);
         
         
         % Compute the error on the hidden layer (backpropagate)
@@ -81,7 +81,7 @@ while ~stop_criterium
         delta_output = learn_rate * transpose( hidden_output) * local_gradient_output  ;
         
         % Compute the delta rule for the hidden units;
-        delta_hidden =  learn_rate * transpose(input_data) * local_gradient_hidden  ;
+        delta_hidden =  learn_rate * transpose(input_data(pattern,:)) * local_gradient_hidden  ;
         
         % Update the weight matrices
         w_hidden = upW(w_hidden, delta_hidden);
