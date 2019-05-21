@@ -11,18 +11,18 @@ plot_animation = true;
 
 
 % Parameters for the network
-learn_rate = 0.2;               % learning rate
+learn_rate = 0.5;               % learning rate
 max_epoch = 5000;              % maximum number of epochs
 
 mean_weight = 0;
-weight_spread = 1;
+weight_spread = 5;
 
 n_input = size(examples,2);
 n_hidden = 20;
 n_output = size(goal,2);
 
 % Noise level at the input
-noise_level = 0.05;
+noise_level = 0.2;
 
 % Activation of the bias node
 bias_value = -1;
@@ -110,7 +110,7 @@ while ~stop_criterium
     
     
     % Implement a stop criterion here
-    if h_error(epoch) < min_error
+    if h_error(epoch) < min_error || epoch == max_epoch
        
         stop_criterium = 1;
     end

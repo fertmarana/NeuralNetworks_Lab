@@ -12,7 +12,7 @@ plot_animation = true;
 plot_bigger_picture = false;
 
 % Parameters for the network
-learn_rate = 0.1;                % learning rate
+learn_rate = 0.05   ;                % learning rate
 max_epoch = 5000;              % maximum number of epochs
 
 
@@ -104,7 +104,7 @@ while ~stop_criterium
     end
     
     % Add your stop criterion here
-    if h_error(epoch) < min_error
+    if h_error(epoch) < min_error || epoch == max_epoch
        
         stop_criterium = 1;
     end
