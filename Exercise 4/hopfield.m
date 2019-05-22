@@ -1,4 +1,4 @@
- % Clear workspace and close all previous windows
+% Clear workspace and close all previous windows
 clear all;
 close all;
 
@@ -8,7 +8,7 @@ n_examples = 3;             % The number of examples(0 < n_examples < 7)
 n_epochs = 6;               % The number of epochs
 normalize_weights = true;   % Normalization bool
 
-random_percentage = 25;     % Percentage of bits that are flipped randomly
+random_percentage = 60;     % Percentage of bits that are flipped randomly
 invert = false;             % Invert the input (test for spurious states) 
 
 
@@ -25,7 +25,6 @@ random_percentage = random_percentage/100;
 % Set color for network plots
 color = 20;
 
-data =0;
 % The data is stored in .dat files. They have to be located in the same
 % directory as this source file
 data = importdata('M.dat');
@@ -48,11 +47,11 @@ end
 
 % The result should be a matrix dimensions: size_examples * size_examples
 % Each entry should contain a sum of n_examples
-weights = [];
+weights = transpose(vector_data) * vector_data;
 
 % A hopfield neuron is not connected to itself. The diagonal of the matrix
 % should be zero.
-weights = [];
+weights = weights - diag(diag(weights));
 
 % These lines check whether the matrix is a valid weight matrix for a 
 % Hopfield network.
@@ -122,10 +121,16 @@ for example = 1:n_examples
     
     for epoch = 1:n_epochs
         % Compute the new activation
-        activation = [];  
+        activation = weights * activation; 
         
         % Apply the activation function
-        activation = [];
+        for i=1:size(activation)
+            if activation(i)>=0
+                activation(i) = 1;
+            else 
+                activation(i) = 0;
+            end
+        end
             
         % PLOTTING THE ACTIVATION
     
