@@ -40,18 +40,14 @@ convolvedFeatures = zeros(convDim, convDim, numFilters, numImages);
 
 interval = round( filterDim/2);
 
-for k = 1:numImages
-    for l = 1:numFilters
-        for i = interval:(imageDim-interval)
-            for j = interval:(imageDim-interval)
-            matriz(i,j,l) = b(l) + images(i-1,i-1,k)*W(1,1,l)+images(i-1,j,k)*W(1,2,l)+images(i-1,j+1,k)*W(1,3,l)+images(i,j-1,k)*W(2,1,l)+images(i,j,k)*W(2,2,l)+images(i,j+1,k)*W(2,3,l)+images(i+1,j-1,k)*W(3,1,l)+images(i+1,j,k)*W(3,2,l)+images(i+1,j+1,k)*W(3,3,l);
-            end
-        end
+for k=1:numImages
+    im = images(:,:,k);
+    for l=1:numFilters
+        weight = rot90(rot90(W(:,:,l)));
+        result = conv2(im,weight,'valid');
+        convolvedFeatures(:,:,l,k) = result;
     end
-convolvedFeatures(:,:,:,k) = matriz;    
-    
 end
-
 
 
 
